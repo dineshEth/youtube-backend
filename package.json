@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "backend in javascript",
   "main": "index.js",
+  "type":"module",
   "scripts": {
-    "dev": "node index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "javascript",
