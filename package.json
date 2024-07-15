@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "backend in javascript",
-  "main": "index.js",
+  "main": "server.js",
   "type":"module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon src/server.js"
   },
   "keywords": [
     "javascript",
