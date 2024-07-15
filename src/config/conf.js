@@ -11,6 +11,7 @@ dotenv.config({
 
 const conf = {
     port:String(process.env.PORT),
+    mongo_db_uri:String(process.env.MONGO_DB_URI),
 }
 
 //* freeze the object { ReadOnly Object }
