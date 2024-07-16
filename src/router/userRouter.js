@@ -1,15 +1,12 @@
 import { Router } from "express";
+import { signup } from "../controller/user/index.js";
 
 
 //* create a router
 const userRouter = Router();
 
 //*  add routes 
-userRouter.post('/',(req,res,next)=>{
-    res.json({
-        message:"ok"
-    });
-})
+userRouter.post('/',signup)
 
 
 export default userRouter;
