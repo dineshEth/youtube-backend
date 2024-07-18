@@ -1,4 +1,5 @@
 import mongoose, {Schema} from "mongoose";
+import bcrypt from 'bcryptjs'
 
 /**
  ** User: 
@@ -58,5 +59,19 @@ const userSchema = new Schema(
         timestamps:true
     }
 );
+
+//* mongoose event
+//** pre("save") =>  call event before save */
+userSchema.pre("save", async()=>{
+    try {
+        if(this.password.isModified){
+            const hashPassword =  await bcrypt.hash(this.password,10);
+            this.password = hashPassword;
+        }
+    } catch (error) {
+        throw new Error("Password Error ::",error.message);
+    }
+});
+
 
 export const User = mongoose.model("User",userSchema);
