@@ -62,15 +62,10 @@ const userSchema = new Schema(
 
 //* mongoose event
 //** pre("save") =>  call event before save */
-userSchema.pre("save", async()=>{
-    try {
-        if(this.password.isModified){
-            const hashPassword =  await bcrypt.hash(this.password,10);
-            this.password = hashPassword;
-        }
-    } catch (error) {
-        throw new Error("Password Error ::",error.message);
-    }
+userSchema.pre("save", async function(next){
+    if(!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password,10);
+    next();
 });
 
 
