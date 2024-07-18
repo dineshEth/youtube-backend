@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'
 import {conf} from './config/conf.js';
 import userRouter from './router/userRouter.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(express.urlencoded({
     limit:"100mb",
     extended:true
 }));
+
+//* configure cookieParser middleware
+app.use(cookieParser());
 
 
 //* register routers
