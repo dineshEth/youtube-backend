@@ -15,7 +15,7 @@ const conf = {
     frontend_domain:String(process.env.FRONTEND_DOMAIN),
     cloud_api_name:String(process.env.CLOUD_NAME),
     cloud_api_key:String(process.env.CLOUD_API_KEY),
-    cloud_api_secret:String(process.env.CLOUD__API_SECRET),
+    cloud_api_secret:String(process.env.CLOUD_API_SECRET),
 }
 
 //* freeze the object { ReadOnly Object }
