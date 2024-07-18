@@ -16,6 +16,10 @@ const conf = {
     cloud_api_name:String(process.env.CLOUD_NAME),
     cloud_api_key:String(process.env.CLOUD_API_KEY),
     cloud_api_secret:String(process.env.CLOUD_API_SECRET),
+    access_token_secret:String(process.env.ACCESS_TOKEN_SECRET),
+    access_token_expiry:String(process.env.ACCESS_TOKEN_EXPIRY),
+    refresh_token_expiry:String(process.env.REFRESH_TOKEN_EXPIRY),
+    refresh_token_secret:String(process.env.REFRESH_TOKEN_SECRET),
 }
 
 //* freeze the object { ReadOnly Object }
