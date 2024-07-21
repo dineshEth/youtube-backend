@@ -1,5 +1,6 @@
 import {v2 as cloudinary} from 'cloudinary';
 import fs from 'node:fs';
+import { ApiError } from '../api/error';
 
 cloudinary.config({
     cloud_name:"",
@@ -20,11 +21,23 @@ async function cloudinaryUpload(localFilePath,folder){
         return response;
     } catch (error) {
         await fs.unlinkSync(localFilePath);
-        console.log("CLOUDINARY API ERROR :: ",error.message);
-        throw new Error("CLOUDINARY API ERROR :: ",error.message)
+        throw new ApiError(500, error.message || "Server failed while uploading")
+    }
+}
+
+async function cloudinaryDelete(publicUrl,type){
+    try {
+        if(!publicUrl) throw new ApiError(404,"PublicUrl not found");
+        await cloudinary.uploader.destroy(publicUrl,{
+            resource_type: type || "image"
+        });
+    } catch (error) {
+        throw new ApiError(500,error.message || "Server failed while removing")
     }
 }
 
 
 
-export {cloudinaryUpload}
+
+
+export {cloudinaryUpload , cloudinaryDelete}
