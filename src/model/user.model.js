@@ -1,5 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 import bcrypt from 'bcryptjs'
+import jwt from "jsonwebtoken";
+import { conf } from '../config/conf.js'
 
 /**
  ** User: 
@@ -68,5 +70,41 @@ userSchema.pre("save", async function(next){
     next();
 });
 
+
+//** methods defining */
+//* compares password
+userSchema.methods.isPasswordCorrect = async function (password){
+    return await bcrypt.compare(password,this.password);
+}
+
+//* AccessToken generator
+userSchema.methods.accessTokenGenerator = async function(){
+    return await jwt.sign(
+        {
+            _id : this._id,
+            fullname: this.fullname,
+            email:this.email,
+            avatar:this.avatar,
+            coverImage:this.coverImage,
+            username:this.username
+        },
+        conf.access_token_secret,
+        { 
+            expiresIn:conf.access_token_expiry
+        }
+    );
+}
+//* RefreshToken generator
+userSchema.methods.refreshTokenGenerator = async function (){
+    return await jwt.sign(
+        {
+            _id:this._id
+        },
+        conf.refresh_token_secret,
+        {
+            expiresIn:conf.refresh_token_expiry
+        }
+    );
+}
 
 export const User = mongoose.model("User",userSchema);
