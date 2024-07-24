@@ -2,6 +2,7 @@ import { ApiError } from '../../api/error.js'
 import { ApiResponse } from '../../api/response.js'
 import { User } from '../../model/user.model.js'
 import { cloudinaryUpload } from '../../util/cloudinary.js'
+import fs from 'node:fs'
 /**
  ** ALGORITHM
  ** get user data from frontend (eg. name, email, password ...);
@@ -17,8 +18,8 @@ import { cloudinaryUpload } from '../../util/cloudinary.js'
 
 async function signup(req,res,next){
     const { username, email, password, firstname, lastname } = req?.body;
-    const avatar = res.files.avatar[0].path;
-    const coverImage = res.files.coverImage[0].path;
+    const avatar = req?.files?.avatar?.at(0)?.path;
+    const coverImage = req?.files?.coverImage?.at(0)?.path;
     let avatarUrl;
     let coverImageUrl;
 
@@ -27,27 +28,34 @@ async function signup(req,res,next){
         [email,password,firstname,lastname,username].some(field => field.length < 0)
     )
     {
-        return res.status(400).json(new ApiError(400,"All fields are required!"));
+        
+        await fs.unlinkSync(avatar)
+        if(coverImage) { await fs.unlinkSync(coverImage) }
+        throw new ApiError(400,"All fields are required!");
     }
 
     const existedUser = await User.findOne( {
         $or : [{username},{email}]
         //* find by username or email
     });
+
     if(existedUser){
-        return res
-        .status(400)
-        .json(new ApiError(403,"User with username or email already exist"));
+        await fs.unlinkSync(avatar)
+        if(coverImage)  {await fs.unlinkSync(coverImage)};
+        throw new ApiError(403,"User with username or email already exist");
     }
+
     try {
-        if(avatar.length < 0){
-            return res.status(400).json(new ApiError(400,"All fields are required!"));
-        } 
+    if(avatar.length < 0) throw new ApiError(400,"All fields are required!")
         //* upload files on cloudinary
-        avatarUrl = await cloudinaryUpload(avatar,"image");
-        coverImageUrl = await cloudinaryUpload(coverImage,"image");
-    } catch (error) {
-        res.status(500).json(new ApiError(503,"Sever Failed",error.message));
+    avatarUrl = await cloudinaryUpload(avatar,"image");
+        if(coverImage?.length > 0){
+            coverImageUrl = await cloudinaryUpload(coverImage,"image");
+        }
+
+    }catch (error) {
+        console.log("ERROR :",error)
+        throw new ApiError(503, error.message|| "Sever Failed");
     }
 
     //* create new user
@@ -57,21 +65,18 @@ async function signup(req,res,next){
             email,
             password,
             fullname: firstname + " " + lastname,
-            avatar:avatarUrl,
-            coverImage:coverImageUrl ? coverImageUrl : "",
+            avatar:avatarUrl.secure_url,
+            coverImage:coverImageUrl ? coverImageUrl.secure_url : "",
             isPublicAccount:true
-        },
-        {
-            new :true
         }
     );
 
-    const user = User.findById(newUser._id).select("-password -refreshToken");
+    const user = await User.findById(newUser._id);
     if(!user) {
-        return res.status(500).json(new ApiError(503,"Something went wrong while registering user"))
+        throw new ApiError(503,"Something went wrong while registering user");
     }
-    
-    res.status(200).json(new ApiResponse(200,"User successfully registered", user));
+
+    return res.status(201).json(new ApiResponse(200,"User successfully registered",user));
 }
 
 
