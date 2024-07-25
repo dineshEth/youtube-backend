@@ -32,7 +32,7 @@
     }
     const newUser = await User.findByIdAndUpdate(user._id,{
         $set:{
-            avatar: avatarUrl ? avatarUrl : avatar,
+            avatar: avatarUrl ? avatarUrl.secure_url : user.avatar,
         }
     }, { new:true }).select("-password -refreshToken -email");
 
