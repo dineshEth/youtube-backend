@@ -1,12 +1,7 @@
 import dotenv from "dotenv";
 
 //* configure dotenv and import all enviroment variables
-dotenv.config({
-    path:'../../.env',
-    encoding:"latin1",
-    debug:true,
-    override:false
-});
+dotenv.config();
 
 
 const conf = {
