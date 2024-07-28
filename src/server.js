@@ -7,7 +7,7 @@ import { dbConnection } from "./db/dbconnection.js";
     const PORT = conf.port || 8000;
     try {
         const response = await dbConnection();
-        if(response.connections.host){
+        if(response.connections[0].host){
             app.listen(PORT,()=>{
                 console.log(`app is listening on port ${PORT}`);
                 console.log(`http://localhost:${PORT}`);
