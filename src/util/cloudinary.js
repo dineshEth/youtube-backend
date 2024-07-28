@@ -1,16 +1,15 @@
 import {v2 as cloudinary} from 'cloudinary';
 import fs from 'node:fs';
 import { ApiError } from '../api/error.js';
-import { resolveObjectURL } from 'node:buffer';
-
+import { conf } from '../config/conf.js';
 cloudinary.config({
-    cloud_name:"",
-    api_key:"",
-    api_secret:"",
+    cloud_name:conf.cloud_api_name,
+    api_key:conf.cloud_api_key,
+    api_secret:conf.cloud_api_secret,
 });
 
 
-async function cloudinaryUpload(localFilePath,folder){
+async function cloudinaryUpload(localFilePath, folder = "image"){
     try {
         if(!localFilePath) return null;
         // TODO: configure folder structure
