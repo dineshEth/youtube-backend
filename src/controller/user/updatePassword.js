@@ -34,6 +34,7 @@ async function updatePassword(req,res){
         }, 
         {new :true})
         .select("-password -email -refreshToken");
+    await updatedUser.save();
 
     return res.status(200).json(new ApiResponse(200,"password Updated",updatedUser));
 }
