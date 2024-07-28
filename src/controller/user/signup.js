@@ -46,7 +46,7 @@ async function signup(req,res,next){
     }
 
     try {
-    if(avatar.length < 0) throw new ApiError(400,"All fields are required!")
+    if(avatar?.length < 0) throw new ApiError(400,"All fields are required!")
         //* upload files on cloudinary
     avatarUrl = await cloudinaryUpload(avatar,"image");
         if(coverImage?.length > 0){
