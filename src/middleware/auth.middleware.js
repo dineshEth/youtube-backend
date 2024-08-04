@@ -23,7 +23,7 @@ async function auth(req,_,next){
         
         if(!decodedToken) throw new ApiError(401, "Unauthorized request");
         
-        const user = await User.findById(decodedToken?._id).select("-refreshToken -email -passord");
+        const user = await User.findById(decodedToken?._id).select("-refreshToken -email -password");
         if(!user) throw new ApiError(404,"User not found");
         req.user = user;
         next()
