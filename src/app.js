@@ -11,7 +11,6 @@ const app = express();
 //* cors configuraion
 app.use(cors({
     origin: conf.frontend_domain,
-    // credentials: true,
 }));
 
 //* enable accepts json data
