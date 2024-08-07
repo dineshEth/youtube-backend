@@ -5,6 +5,7 @@ import userRouter from './router/userRouter.js';
 import cookieParser from 'cookie-parser';
 import videoRouter from './router/videoRouter.js';
 import postRouter from './router/postRouter.js';
+import subscriptionRouter from './router/subscriptionRouter.js';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use('/api/v1/users/',userRouter);  // http://localhost:3000/api/v1/users/
 app.use('/api/v1/videos/',videoRouter); // http://localhost:3000/api/v1/videos/
 app.use('/api/v1/posts/', postRouter); // http://localhost:3000/api/v1/posts/
+app.use('/api/v1/subscription/', subscriptionRouter);
 
 
 export default app;
