@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { comment } from 'postcss';
 
 const videoSchema = new Schema(
     {
@@ -18,15 +17,19 @@ const videoSchema = new Schema(
             ref:"User",
             require:true,
         },
+        videoFile:{
+            type:String,
+            require:true
+        },
+        thumbnail:{
+            type:String,
+            require: true
+        },
         isPublic:{
             type:Boolean,
             default:true
         },
         duration:{
-            type:Number,
-            default:0
-        },
-        views:{
             type:Number,
             default:0
         }
