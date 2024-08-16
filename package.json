@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "backend in javascript",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js"
   },
@@ -16,11 +16,13 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.2.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
