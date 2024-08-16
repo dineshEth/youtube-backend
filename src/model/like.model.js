@@ -8,7 +8,7 @@ const likeSchema = new Schema(
         },
         likeOwner:{
             type:Schema.Types.ObjectId,
-            ref:User
+            ref:"User"
         }
     },
     {
