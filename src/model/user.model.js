@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema} from "mongoose";
 import bcrypt from 'bcryptjs'
 import jwt from "jsonwebtoken";
 import { conf } from '../config/conf.js'
@@ -65,7 +65,8 @@ const userSchema = new Schema(
 //* mongoose event
 //** pre("save") =>  call event before save */
 userSchema.pre("save", async function(next){
-    if(!this.isModified("password")) return next();
+    console.log(this.modifiedPaths().includes("password"));
+    if(!this.modifiedPaths().includes('password')) return next();
     this.password = await bcrypt.hash(this.password,10);
     next();
 });
